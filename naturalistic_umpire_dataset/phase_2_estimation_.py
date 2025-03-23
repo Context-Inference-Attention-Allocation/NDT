@@ -8,13 +8,14 @@ import warnings
 
 warnings.filterwarnings('ignore')
 class EMAlgorithm:
-    def __init__(self, df, plot_flag, plot_threshold, n_hidden_states=12, max_iterations=2000000, convergence_value=0.001, temperature=1):
+    def __init__(self, df, plot_flag, plot_threshold, n_hidden_states=12, max_iterations=200000, convergence_value=0.001, temperature=1):
         self.n_hidden_states = n_hidden_states
         self.max_iterations = max_iterations
         self.convergence_value = convergence_value
         self.Temp_ = temperature
         self.plot_flag = plot_flag
         self.threshold = plot_threshold
+        self.df = df
         
         # Process data
         self.posteriors = df[[f'post_s{id}' for id in range(n_hidden_states)]].to_numpy()
@@ -157,7 +158,7 @@ class EMAlgorithm:
             else:
                 worse_count += 1
             
-            if i % 10 == 0:
+            if i % 100 == 0:
                 print(f"Iteration {i + 1}: Log likelihood = {current_log_likelihood}")
                 print('Weights:', self.weights)
                 print('Bias:',self.bias)
@@ -170,8 +171,8 @@ class EMAlgorithm:
                 print("Stopped due to 10 consecutive worsening iterations.")
                 break
             
-    def get_empirical_accuracy(self,df,threshold=0.1):
-        df_filter = df[(df['pitch_location']<=threshold)]   
+    def get_empirical_accuracy(self,threshold=0.1):
+        df_filter = self.df[(self.df['pitch_location']<=threshold)]   
         accuracy_per_state = df_filter.groupby('dec_states')['error_in_decision'].mean()
         return accuracy_per_state
     
@@ -209,8 +210,8 @@ class EMAlgorithm:
 
     def plot_logistic_probabilities(self):
         n_samples = 100
-        min_pitch = df['pitch_location'].min()
-        max_pitch = df['pitch_location'].max()
+        min_pitch = self.df['pitch_location'].min()
+        max_pitch = self.df['pitch_location'].max()
         # Generate a continuous variable
         pitch_loc = np.linspace(start=min_pitch, stop=max_pitch, num=n_samples).reshape(n_samples, 1)
     
@@ -268,7 +269,7 @@ class EMAlgorithm:
         pi_a0_given_s = exp_R0 / (exp_R1 + exp_R0)
     
         # Rearrange probabilities and true values
-        true_overall = self.get_empirical_accuracy(df).to_numpy()
+        true_overall = self.get_empirical_accuracy().to_numpy()
 
         prob_overall= self.generate_probabilities(1,self.threshold)
         #umpire 2 0.06, umpire 3 0.05
