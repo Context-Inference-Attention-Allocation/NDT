@@ -8,7 +8,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 class EMAlgorithm:
-    def __init__(self, df, plot_flag, plot_threshold, n_hidden_states=12, max_iterations=200000, convergence_value=0.001, temperature=1):
+    def __init__(self, df, plot_flag, plot_threshold,seed_, n_hidden_states=12, max_iterations=200000, convergence_value=0.001, temperature=1):
         self.n_hidden_states = n_hidden_states
         self.max_iterations = max_iterations
         self.convergence_value = convergence_value
@@ -29,11 +29,10 @@ class EMAlgorithm:
         self.outcome = df[['error_in_decision']].to_numpy().ravel()
         
         # Initialize parameters
-        np.random.seed(0)
+        np.random.seed(seed_)
         self.init_b = np.random.random(self.F1 + self.F2)
-        #self.init_b = np.ones(self.F1 + self.F2)
         self.init_bias = np.zeros(2)
-        np.random.seed(0)
+        np.random.seed(seed_)
         self.init_c = np.random.random(self.F3 * n_hidden_states)
         
         #set initial weights, bias, theta
@@ -272,7 +271,6 @@ class EMAlgorithm:
         true_overall = self.get_empirical_accuracy().to_numpy()
 
         prob_overall= self.generate_probabilities(1,self.threshold)
-        #umpire 2 0.06, umpire 3 0.05
 
         rearranged_prob = prob_overall[new_indices_theta]
         rearranged_true = true_overall[new_indices_theta]
