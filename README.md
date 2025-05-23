@@ -1,7 +1,7 @@
 # **Contextual Inference and Attention Allocation**  
 
-This repository contains code and data for the paper **Attention Allocation is Adapted to Context:
-Evidence from a Naturalistic Discrimination Task**. The repository is divided into two main sections:  
+This repository contains code and data for the paper **A Model of Attentional Effort Adapted to Context: Evidence from a
+Naturalistic Discrimination Task**. The repository is divided into two main sections:  
 1. **Illustrative Example** (synthetic data generation and parameter estimation)  
 2. **Naturalistic Umpire Dataset** (contextual inference and policy estimation for real umpires)  
 
