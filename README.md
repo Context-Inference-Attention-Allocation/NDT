@@ -1,5 +1,4 @@
-# **A Structural Model of Attentional Effort Dynamics: 
-Evidence from a Naturalistic Discrimination Task**  
+# A Structural Model of Attentional Effort Dynamics: Evidence from a Naturalistic Discrimination Task 
 
 This repository contains code and data for the paper **A Structural Model of Attentional Effort Dynamics:
 Evidence from a Naturalistic Discrimination Task**. The repository is divided into two main sections:  
